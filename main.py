@@ -46,6 +46,7 @@ class FWrule:
                 self.dst_netmask.append(row['dst_netmask'])
                 self.ports.append(row['ports'])
                 self.action.append(row['action'])
+
         print(self.src_address)
 
     def adr_mask(self):
@@ -57,6 +58,11 @@ class FWrule:
             if current_address.network not in adr_mask:
                 adr_mask.append(current_address.network)
             t += 1
+
+        with open('sw_data_new.csv', 'w',  newline='') as f:
+            writer = csv.writer(f, delimiter=';')
+            for row in adr_mask:
+                writer.writerow(row)
         return adr_mask
 
     def per_88_3389(self):
@@ -113,21 +119,32 @@ class FWrule:
         return b
 
     def one_year_ago(self):
-        b = list()
-        k = 0
-        for i in self.datetime_created:
-            i = 
-            if i == 'permit':
-                if c in self.ports[k] and d in self.ports[k]:
-                    b.append(self.src_address[k])
-            k += 1
-        return b
+        itog_date = list()
+        for list_date in self.datetime_created:
+            date_date = datetime.datetime.fromisoformat(list_date)
+
+            delta = datetime.timedelta(days=365)
+            if datetime.datetime.now(datetime.timezone.utc) - date_date > delta:
+                itog_date.append(list_date)
+        return itog_date
+
+    def this_three_month(self):
+        itog_date = list()
+        for list_date in self.datetime_created:
+            date_date = datetime.datetime.fromisoformat(list_date)
+
+            delta = datetime.timedelta(days=92)
+            if datetime.datetime.now(datetime.timezone.utc) - date_date < delta:
+                itog_date.append(list_date)
+        return itog_date
 
 
 a = FWrule()
-print('adr_mask:\n', a.adr_mask(), '\n', '-' * 300)
-print('per_88_3389:\n', a.per_88_3389(), '\n', '-' * 300)
-print('per_80_443:\n', a.per_80_443(), '\n', '-' * 300)
-print('per_21:\n', a.per_21(), '\n', '-' * 300)
-print('all_per:\n', a.all_per(), '\n', '-' * 300)
-print('all_forb:\n', a.all_forb(), '\n', '-' * 300)
+print('adr_mask:\n', a.adr_mask(), '\n', '-' * 3500)
+print('per_88_3389:\n', a.per_88_3389(), '\n', '-' * 3500)
+print('per_80_443:\n', a.per_80_443(), '\n', '-' * 3500)
+print('per_21:\n', a.per_21(), '\n', '-' * 3500)
+print('all_per:\n', a.all_per(), '\n', '-' * 3500)
+print('all_forb:\n', a.all_forb(), '\n', '-' * 3500)
+print('one_year_ago+:\n', a.one_year_ago(), '\n', '-' * 3500)
+print('this_three_month:\n', a.this_three_month(), '\n', '-' * 3500)
