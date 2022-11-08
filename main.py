@@ -18,7 +18,7 @@ class FWrule:
             spamreader = csv.DictReader(csvfile, delimiter=';')
             self.list_of_my_rules = list()
             for row in spamreader:
-                self.datetime_created = row['datetime_created']
+                self.datetime_created.append(row['datetime_created'])
                 self.src_address.append(row['src_address'])
                 self.src_netmask.append(row['src_netmask'])
                 self.dst_address.append(row['dst_address'])
@@ -27,9 +27,8 @@ class FWrule:
                 self.action.append(row['action'])
         with open('fw_rules_v2.csv', 'r', newline='') as csvfile:
             spamreader = csv.DictReader(csvfile, delimiter=';')
-            #  self.list_of_my_rules = list()
             for row in spamreader:
-                self.datetime_created = row['datetime_created']
+                self.datetime_created.append(row['datetime_created'])
                 self.src_address.append(row['src_address'])
                 self.src_netmask.append(row['src_netmask'])
                 self.dst_address.append(row['dst_address'])
@@ -39,16 +38,14 @@ class FWrule:
 
         with open('fw_rules_v3.csv', 'r', newline='') as csvfile:
             spamreader = csv.DictReader(csvfile, delimiter=';')
-            # self.list_of_my_rules = list()
             for row in spamreader:
-                self.datetime_created = row['datetime_created']
+                self.datetime_created.append(row['datetime_created'])
                 self.src_address.append(row['src_address'])
                 self.src_netmask.append(row['src_netmask'])
                 self.dst_address.append(row['dst_address'])
                 self.dst_netmask.append(row['dst_netmask'])
                 self.ports.append(row['ports'])
                 self.action.append(row['action'])
-                #  print(self.src_netmask)
         print(self.src_address)
 
     def adr_mask(self):
@@ -62,6 +59,18 @@ class FWrule:
             t += 1
         return adr_mask
 
+    def per_88_3389(self):
+        b = list()
+        c = '22'
+        d = '3389'
+        k = 0
+        for i in self.action:
+            if i == 'permit':
+                if '22' in self.ports[i] and '3389' in self.ports[i]:
+                    b.append(self.src_address[k])
+            k += 1
+        return b
+
         # ip = self.src_address + '/' + self.src_netmask
         # test_address = ipaddress.IPv4Interface(ip)
         # print(test_address.network)
@@ -69,64 +78,4 @@ class FWrule:
 
 a = FWrule()
 print(a.adr_mask())
-#  print(a.src_netmask)
-#  sample_rule = list_of_my_rules[0]
-
-
-
-
-
-
-# import csv
-# import datetime
-# import ipaddress
-#
-#
-# class FWrule:
-#     datetime_created: datetime.datetime
-#     src_address: str
-#     src_netmask: str
-#     dst_address: str
-#     dst_netmask: str
-#     ports: list[int]
-#     action: str
-#
-#     def adr_mask(self):
-#         ip = self.src_address + '/' + self.src_netmask
-#         test_address = ipaddress.IPv4Interface(ip)
-#         print(test_address.network)
-#
-
-# def generate_list():
-#     with open('fw_rules_v1.csv', 'r', newline='') as csvfile:
-#         spamreader = csv.DictReader(csvfile, delimiter=';')
-#         list_of_my_rules = list()
-#         for row in spamreader:
-#             rule = FWrule()
-#
-#             rule.datetime_created = row['datetime_created']
-#             rule.src_address = row['src_address']
-#             rule.src_netmask = row['src_netmask']
-#             rule.dst_address = row['dst_address']
-#             rule.dst_netmask = row['dst_netmask']
-#             rule.port = row['ports']
-#             rule.action = row['action']
-#
-#             list_of_my_rules.append(rule.datetime_created)
-#             list_of_my_rules.append(rule.src_address)
-#             list_of_my_rules.append(rule.src_netmask)
-#             list_of_my_rules.append(rule.dst_address)
-#             list_of_my_rules.append(rule.dst_netmask)
-#             list_of_my_rules.append(rule.port)
-#             list_of_my_rules.append(rule.action)
-#
-#             return list_of_my_rules
-#
-#
-# list_of_my_rules = generate_list()
-# print(list_of_my_rules)
-# generate_list()
-#
-# a = FWrule()
-#
-# sample_rule = list_of_my_rules[0]
+print(a.per_88_3389())
