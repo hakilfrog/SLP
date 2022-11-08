@@ -66,16 +66,68 @@ class FWrule:
         k = 0
         for i in self.action:
             if i == 'permit':
-                if '22' in self.ports[i] and '3389' in self.ports[i]:
+                if c in self.ports[k] and d in self.ports[k]:
                     b.append(self.src_address[k])
             k += 1
         return b
 
-        # ip = self.src_address + '/' + self.src_netmask
-        # test_address = ipaddress.IPv4Interface(ip)
-        # print(test_address.network)
+    def per_80_443(self):
+        b = list()
+        c = '80'
+        d = '443'
+        k = 0
+        for i in self.action:
+            if i == 'permit':
+                if c in self.ports[k] and d in self.ports[k]:
+                    b.append(self.src_address[k])
+            k += 1
+        return b
+
+    def per_21(self):
+        b = list()
+        c = '21'
+        k = 0
+        for i in self.action:
+            if i == 'permit':
+                if c in self.ports[k]:
+                    b.append(self.src_address[k])
+            k += 1
+        return b
+
+    def all_per(self):
+        b = list()
+        k = 0
+        for i in self.action:
+            if i == 'permit':
+                b.append(self.src_address[k])
+            k += 1
+        return b
+
+    def all_forb(self):
+        b = list()
+        k = 0
+        for i in self.action:
+            if i != 'permit':
+                b.append(self.src_address[k])
+            k += 1
+        return b
+
+    def one_year_ago(self):
+        b = list()
+        k = 0
+        for i in self.datetime_created:
+            i = 
+            if i == 'permit':
+                if c in self.ports[k] and d in self.ports[k]:
+                    b.append(self.src_address[k])
+            k += 1
+        return b
 
 
 a = FWrule()
-print(a.adr_mask())
-print(a.per_88_3389())
+print('adr_mask:\n', a.adr_mask(), '\n', '-' * 300)
+print('per_88_3389:\n', a.per_88_3389(), '\n', '-' * 300)
+print('per_80_443:\n', a.per_80_443(), '\n', '-' * 300)
+print('per_21:\n', a.per_21(), '\n', '-' * 300)
+print('all_per:\n', a.all_per(), '\n', '-' * 300)
+print('all_forb:\n', a.all_forb(), '\n', '-' * 300)
