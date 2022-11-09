@@ -58,10 +58,13 @@ class FWrule:
             if current_address.network not in adr_mask:
                 adr_mask.append(current_address.network)
             t += 1
-
-        with open('sw_data_new.csv', 'w',  newline='') as f:
+        list_adr_mask = list()
+        list_adr_mask.append(adr_mask)
+        print(list_adr_mask)
+        with open('adr_mask.csv', 'w', newline='') as f:
             writer = csv.writer(f, delimiter=';')
-            for row in adr_mask:
+            # writer.writerow(list_adr_mask)
+            for row in list_adr_mask:
                 writer.writerow(row)
         return adr_mask
 
