@@ -14,7 +14,8 @@ class FWrule:
     list_of_my_rules: list = list()
 
     def __init__(self):
-        with open('fw_rules_v1.csv', 'r', newline='') as csvfile:
+        with open('fw_rules_v1.csv', 'r', newline='') as csvfile: # не получилось придумать как брать разные названия
+            # файлов, т к из коснтруктора не получилось вызывать фукцию/метод для впихивания файла 
             spamreader = csv.DictReader(csvfile, delimiter=';')
             self.list_of_my_rules = list()
             for row in spamreader:
@@ -82,23 +83,23 @@ class FWrule:
 
     def per_80_443(self):
         b = list()
-        c = '80'
-        d = '443'
+        port1 = '80'
+        port2 = '443'
         k = 0
         for i in self.action:
             if i == 'permit':
-                if c in self.ports[k] and d in self.ports[k]:
+                if port1 in self.ports[k] and port2 in self.ports[k]:
                     b.append(self.src_address[k])
             k += 1
         return b
 
     def per_21(self):
         b = list()
-        c = '21'
+        port1 = '21'
         k = 0
         for i in self.action:
             if i == 'permit':
-                if c in self.ports[k]:
+                if port1 in self.ports[k]:
                     b.append(self.src_address[k])
             k += 1
         return b
